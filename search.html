@@ -95,7 +95,83 @@
     box-shadow: none;
     border: 1px solid #535353;
 }
+ .card {
+            background-color: #181818;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+            margin: 5px;
+        }
 
+        .card:hover {
+            background-color: #282828;
+        }
+
+        .card-content {
+            display: flex;
+            padding: 16px;
+        }
+
+        .album-cover {
+            width: 60px;
+            height: 80px;
+            border-radius: 4px;
+        }
+
+        .track-info {
+            margin-left: 16px;
+            flex-grow: 1;
+        }
+
+        .track-title {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0 0 4px 0;
+        }
+
+        .artist, .album {
+            color: #b3b3b3;
+            font-size: 14px;
+            margin: 0 0 4px 0;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .play-button {
+            background-color: #1db954;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
+        .more-options {
+            color: #b3b3b3;
+            font-size: 20px;
+            margin-left: 16px;
+            cursor: pointer;
+        }
+
+        .more-options:hover {
+            color: #ffffff;
+        }
 .search-icon {
     background-color: #242424;
     border: none;
@@ -120,6 +196,14 @@
 .category-card h4 {
     color: white;
     margin: 0;
+}
+#search-btn{
+    background-color: #1db954;
+    color: white;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 /* Gradient backgrounds for category cards */
@@ -186,6 +270,7 @@
                                 <i class="bi bi-search"></i>
                             </span>
                             <input type="text" class="form-control search-input" placeholder="What do you want to listen to?">
+                            <button id="search-btn">search</button>
                         </div>
                     </div>
 
@@ -241,10 +326,10 @@
                 <div class="row align-items-center">
                     <div class="col-md-3">
                         <div class="d-flex align-items-center">
-                            <img src="https://via.placeholder.com/60" alt="Now Playing" class="me-3">
-                            <div>
+                            <img src="https://via.placeholder.com/300x400" alt="Album Cover" class="album-cover">
+                            <div style="margin-left:10px ;">
                                 <h6 class="text-white mb-0">Song Title</h6>
-                                <small class="text-muted">Artist</small>
+                                <small class="" style="color: #ffffff;">Artist</small>
                             </div>
                         </div>
                     </div>
@@ -275,63 +360,55 @@
     <script src="main.js"></script>
     <script >
         document.addEventListener('DOMContentLoaded', async function() {
-    const searchInput = document.querySelector('.search-input');
-    const searchResults = document.getElementById('searchResults');
-    const resultsContainer = document.getElementById('resultsContainer');
-    const browseAll = document.getElementById('browseAll');
-            const response = await fetch('/fetch-data', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                query: {
-                    q: searchInput.value
-                }
-            });
-            console.log(response);
+                const searchInput = document.querySelector('.search-input');
+                const searchResults = document.getElementById('searchResults');
+                const resultsContainer = document.getElementById('resultsContainer');
+                const browseAll = document.getElementById('browseAll');
+                const searchBtn = document.getElementById('search-btn');
+            // const response = await fetch('/fetch-data', {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     query: {
+            //         q: searchInput.value
+            //     }
+            // });
+            // console.log(response);
             
     // Mock data for search results
-    const mockSongs = [
-        { title: 'Shape of You', artist: 'Ed Sheeran', image: 'https://via.placeholder.com/150' },
-        { title: 'Blinding Lights', artist: 'The Weeknd', image: 'https://via.placeholder.com/150' },
-        { title: 'Bad Guy', artist: 'Billie Eilish', image: 'https://via.placeholder.com/150' },
-        { title: 'Stay', artist: 'Kid Laroi & Justin Bieber', image: 'https://via.placeholder.com/150' }
-    ];
-
-    searchInput.addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
+   
+    searchBtn.addEventListener('click',async ()=>{
+        const searchTerm = searchInput.value.toLowerCase();
         
-        // if (searchTerm.length > 0) {
-        //     // Filter songs based on search term
-        //     const filteredSongs = mockSongs.filter(song => 
-        //         song.title.toLowerCase().includes(searchTerm) || 
-        //         song.artist.toLowerCase().includes(searchTerm)
-        //     );
+        const response = await fetch('/fetch-data?q='+encodeURI(searchTerm));
 
-        //     // Show search results and hide browse section
-        //     searchResults.classList.remove('d-none');
-        //     browseAll.classList.add('d-none');
+        const data = await response.json();
+        console.log(data);
+         searchResults.classList.remove('d-none');
+            browseAll.classList.add('d-none');
+        displaySearchResults(data);
 
-        //     // Display results
-        //     displaySearchResults(filteredSongs);
-        // } else {
-        //     // Hide search results and show browse section when search is empty
-        //     searchResults.classList.add('d-none');
-        //     browseAll.classList.remove('d-none');
-        // }
-    });
-
-    function displaySearchResults(songs) {
-        resultsContainer.innerHTML = songs.map(song => `
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="playlist-card">
-                    <img src="${song.image}" alt="${song.title}" class="img-fluid mb-2">
-                    <h5 class="text-white">${song.title}</h5>
-                    <p class="text-muted">${song.artist}</p>
+    })
+function displaySearchResults(songs) {
+     resultsContainer.innerHTML = songs.map(song => `
+           <div class="card">
+                <div class="card-content">
+                    <img src="${ 'https://via.placeholder.com/300x400'}" alt="Album Cover" class="album-cover">
+                    <div class="track-info">
+                        <h4 class="track-title">${song.title}</h4>
+                        <p class="artist">${song.artist || 'Unknown Artist'}</p>
+                    </div>
+                    <div class="controls">
+                        <button class="play-button" data-video-url="${song.videoUrl}">></button>
+                        <span class="more-options">⋯</span>
+                    </div>
                 </div>
             </div>
         `).join('');
-    }
+
+}
+
 });
     </script>
 </body>

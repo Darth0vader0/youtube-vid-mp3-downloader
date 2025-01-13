@@ -21,30 +21,31 @@ app.get('/', (req, res) => {
 // Function to search YouTube
 async function searchYouTube(query) {
     const youtube = google.youtube('v3');
-    try {
-        const response = await youtube.search.list({
-            part: 'snippet',
-            q: query,
-            type: 'video',
-            maxResults: 10,
-            key: 'AIzaSyAW8W9AjxXvLY8fbK9HjDI3cs2BdFR-BVc',
-        });
+try {
+    const response = await youtube.search.list({
+        part: 'snippet',
+        q: query + ' official video',
+        type: 'video',
+        maxResults: 5,
+        key: 'AIzaSyAW8W9AjxXvLY8fbK9HjDI3cs2BdFR-BVc',
+    });
 
-        const results = {};
-        response.data.items.forEach(item => {
-            const title = item.snippet.title;
-            const videoId = item.id.videoId;
-            const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-            results[title] = videoUrl;
-        });
+    // Create an array of objects
+    const results = response.data.items.map(item => ({
+        title: item.snippet.title,
+        videoId: item.id.videoId,
+        videoUrl: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+    }));
 
-        return results;
-    } catch (error) {
-        console.error('Error while fetching YouTube search results:', error.message);
-        return {};
-    }
+    return results;
+} catch (error) {
+    console.error('Error while fetching YouTube search results:', error.message);
+    return [];
 }
-
+}
+app.get('/search',(req,res)=>{
+    res.sendFile(path.join(__dirname, 'search.html'))
+})
 app.get('/fetch-data', async (req, res) => {
     try {
         const query = req.query.q || "never gonna give up";
