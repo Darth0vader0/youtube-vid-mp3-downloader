@@ -6,89 +6,29 @@ const { google } = require('googleapis');
 const fs = require('fs');
 const app = express();
 const port = 3001;
-const mysql = require('mysql');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "music_app"
-});
-db.connect((err) => {
-    if (err) {
-        throw err;
-    }
-    console.log('Connected to database');
-});
+const cookieParser = require('cookie-parser');
 
 
+const {login,signup,home} = require('./src/routes/routes');
+const {signUp,logIn,checkLogins} = require('./src/controllers/auth.controller');
 // Middleware
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('../public')); // Serve static files
-
+app.use(cookieParser());
 // Serve index.html
-app.get('/', (req, res) => {
-    res.sendFile("C:/nodeApp/public/layouts.html");
-});
-app.get('/login', (req, res) => {
-    res.sendFile("C:/nodeApp/public/login.html");
-});
-app.get('/signup', (req, res) => {
-    res.sendFile("C:/nodeApp/public/signup.html");
-});
+app.get('/',home);
+app.get('/login', login);
+app.get('/signup', signup);
+app.get('/checkLogins',checkLogins);
 
 
 // Signup endpoint
-app.post('/signup', async (req, res) => {
-    const { email, password, profile_name, day, month, year, gender } = req.body;
-    console.log(req.body);
-    q = `SELECT * FROM users WHERE email = '${email}'`;
-    db.query(q, async (err, result) => {
-        if (err) {
-            console.error('Error checking for existing user:', err.message);
-            return res.status(500).json({ message: 'Internal server error' });
-        }
-        if (result.length > 0) {
-            return res.status(409).json({ message: 'Email already exists' });
-        }
-        if (!email || !password || !profile_name || !day || !month || !year || !gender) {
-            return res.status(400).json({ message: 'All fields are required' });
-        }
-        const date_of_birth = `${year}-${month}-${day}`;
-
-        try {
-            // Hash the password
-            const hashedPassword = await bcrypt.hash(password, 10);
-
-            // SQL query to insert user data
-            const query = `
-            INSERT INTO users (email, password, profile_name, date_of_birth, gender) 
-            VALUES (?, ?, ?, ?, ?)
-        `;
-            db.query(query, [email, hashedPassword, profile_name, date_of_birth, gender], (err, result) => {
-                if (err) {
-                    console.error('Error inserting user:', err.message);
-                    if (err.code === 'ER_DUP_ENTRY') {
-                        return res.status(409).json({ message: 'Email already exists' });
-                    }
-                    return res.status(500).json({ message: 'Internal server error' });
-                }
-                res.status(201).json({ message: 'User registered successfully' });
-            });
-        } catch (error) {
-            console.error('Error during signup:', error.message);
-            res.status(500).json({ message: 'Something went wrong' });
-        }
-    });
-    // Validate fields
-
-
-    // Combine day, month, year into a date
-
-});
-
+app.post('/signup',signUp);
+app.post('/login',logIn);
 
 // Function to search YouTube
 async function searchYouTube(query) {
