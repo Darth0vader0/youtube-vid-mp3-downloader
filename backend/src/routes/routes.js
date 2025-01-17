@@ -7,5 +7,8 @@ const login = (req,res)=>{
 const home=(req,res)=>{ 
     res.sendFile("C:/nodeApp/public/home.html");
 }
+const profile=(req,res)=>{
+    res.sendFile("C:/nodeApp/public/profile.html");
+}
 
-module.exports = {signup,login,home};
+module.exports = {signup,login,home,profile};

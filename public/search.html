@@ -6,214 +6,7 @@
     <title>Search - Spotify Clone</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <style>
-        body {
-    background-color: #121212;
-    color: white;
-    min-height: 100vh;
-}
-
-.sidebar {
-    background-color: #000000;
-    min-height: 100vh;
-    padding-bottom: 100px;
-}
-
-.nav-link {
-    color: #b3b3b3;
-}
-
-.nav-link:hover {
-    color: white;
-}
-
-.nav-link.active {
-    background-color: #282828 !important;
-}
-
-.main-content {
-    background: linear-gradient(to bottom, #404040, #121212);
-    min-height: 100vh;
-    padding-bottom: 100px;
-}
-
-.playlist-card {
-    background-color: #181818;
-    padding: 16px;
-    border-radius: 8px;
-    transition: background-color 0.3s;
-    cursor: pointer;
-}
-
-.playlist-card:hover {
-    background-color: #282828;
-}
-
-.player {
-    background-color: #181818;
-    padding: 16px 0;
-    border-top: 1px solid #282828;
-}
-
-.progress {
-    height: 4px;
-    background-color: #4d4d4d;
-}
-
-.progress-bar {
-    background-color: #1db954;
-}
-
-.form-range::-webkit-slider-thumb {
-    background: #1db954;
-}
-
-.btn-link {
-    text-decoration: none;
-}
-
-.btn-link:hover {
-    color: #1db954 !important;
-}
-
-/* Search page specific styles */
-.search-container {
-    max-width: 600px;
-}
-
-.search-input {
-    background-color: #242424;
-    border: none;
-    color: white;
-    padding: 12px;
-    font-size: 1rem;
-}
-
-.search-input:focus {
-    background-color: #242424;
-    color: white;
-    box-shadow: none;
-    border: 1px solid #535353;
-}
- .card {
-            background-color: #181818;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 400px;
-            overflow: hidden;
-            transition: background-color 0.3s ease;
-            margin: 5px;
-        }
-
-        .card:hover {
-            background-color: #282828;
-        }
-
-        .card-content {
-            display: flex;
-            padding: 16px;
-        }
-
-        .album-cover {
-            width: 60px;
-            height: 80px;
-            border-radius: 4px;
-        }
-
-        .track-info {
-            margin-left: 16px;
-            flex-grow: 1;
-        }
-
-        .track-title {
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: bold;
-            margin: 0 0 4px 0;
-        }
-
-        .artist, .album {
-            color: #b3b3b3;
-            font-size: 14px;
-            margin: 0 0 4px 0;
-        }
-
-        .controls {
-            display: flex;
-            align-items: center;
-        }
-
-        .play-button {
-            background-color: #1db954;
-            border: none;
-            border-radius: 50%;
-            color: white;
-            width: 40px;
-            height: 40px;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .play-button:hover {
-            transform: scale(1.1);
-        }
-
-        .more-options {
-            color: #b3b3b3;
-            font-size: 20px;
-            margin-left: 16px;
-            cursor: pointer;
-        }
-
-        .more-options:hover {
-            color: #ffffff;
-        }
-.search-icon {
-    background-color: #242424;
-    border: none;
-    color: #b3b3b3;
-}
-
-.category-card {
-    background-color: #181818;
-    padding: 20px;
-    border-radius: 8px;
-    height: 200px;
-    display: flex;
-    align-items: flex-end;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-
-.category-card:hover {
-    transform: scale(1.02);
-}
-
-.category-card h4 {
-    color: white;
-    margin: 0;
-}
-#search-btn{
-    background-color: #1db954;
-    color: white;
-    border: none;
-    border-radius: 0 8px 8px 0;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-/* Gradient backgrounds for category cards */
-.bg-gradient-1 { background: linear-gradient(45deg, #FF4081, #FF79B0); }
-.bg-gradient-2 { background: linear-gradient(45deg, #7C4DFF, #B47CFF); }
-.bg-gradient-3 { background: linear-gradient(45deg, #FF3D00, #FF7539); }
-.bg-gradient-4 { background: linear-gradient(45deg, #00BCD4, #4DD0E1); }
-.bg-gradient-5 { background: linear-gradient(45deg, #4CAF50, #81C784); }
-.bg-gradient-6 { background: linear-gradient(45deg, #FF9800, #FFB74D); }
-    </style>
+    <link rel="stylesheet" href="css/searchPage.css">
 </head>
 <body>
     <div class="container-fluid">
@@ -224,7 +17,7 @@
                     <h3 class="text-white mb-4">Spotify Clone</h3>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="index.html" class="nav-link">
+                            <a href="home.html" class="nav-link">
                                 <i class="bi bi-house-door me-2"></i>Home
                             </a>
                         </li>
@@ -384,7 +177,7 @@
         const response = await fetch('/fetch-data?q='+encodeURI(searchTerm));
 
         const data = await response.json();
-        console.log(data);
+       
          searchResults.classList.remove('d-none');
             browseAll.classList.add('d-none');
         displaySearchResults(data);

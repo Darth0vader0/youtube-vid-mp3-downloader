@@ -69,7 +69,6 @@ const logIn = async (req, res) => {
 }
 const checkLogins = (req,res)=>{
     const token = req.cookies.jwt;
-    console.log(token)
     if(!token){
         return res.status(401).json({message:"User not logged in"});
     }
@@ -80,4 +79,10 @@ const checkLogins = (req,res)=>{
         res.status(200).json({message:"User logged in"});
     });
 }
-module.exports = { signUp, logIn , checkLogins};
+
+const logout = (req,res)=>{
+    res.cookie('jwt','',{maxAge:1});
+    res.redirect('/');
+}
+
+module.exports = { signUp, logIn , checkLogins,logout};

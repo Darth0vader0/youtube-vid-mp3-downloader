@@ -10,8 +10,9 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 
-const {login,signup,home} = require('./src/routes/routes');
-const {signUp,logIn,checkLogins} = require('./src/controllers/auth.controller');
+const {login,signup,home,profile} = require('./src/routes/routes');
+const {signUp,logIn,checkLogins,logout} = require('./src/controllers/auth.controller');
+const {fetchUserData} = require('./src/controllers/user.controller');   
 // Middleware
 
 app.use(cors());
@@ -24,8 +25,9 @@ app.get('/',home);
 app.get('/login', login);
 app.get('/signup', signup);
 app.get('/checkLogins',checkLogins);
-
-
+app.get('/profile',profile);
+app.get('/logout',logout);
+app.get('/fetchUserData',fetchUserData);
 // Signup endpoint
 app.post('/signup',signUp);
 app.post('/login',logIn);
