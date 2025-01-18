@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwtGenerator = require('../lib/utils');
 const jwt = require('jsonwebtoken')
 const db = require('../lib/db');
+
 const signUp = async (req, res) => {
     const { email, password, profile_name, day, month, year, gender } = req.body;
     console.log(req.body);

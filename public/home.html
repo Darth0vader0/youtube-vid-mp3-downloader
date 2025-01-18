@@ -17,12 +17,12 @@
                     <h3 class="text-white mb-4">Spotify Clone</h3>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link active">
+                            <a href="/" class="nav-link active">
                                 <i class="bi bi-house-door me-2"></i>Home
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="search.html" class="nav-link">
+                            <a href="/search" class="nav-link">
                                 <i class="bi bi-search me-2"></i>Search
                             </a>
                         </li>
@@ -128,13 +128,9 @@
     // Play button functionality
 
     const checkLogin = await fetch('/checkLogins');
-    console.log(checkLogin)
+    
     if(!checkLogin.ok){
         document.getElementById('user').innerText = 'login'
-        console.log('not logged in');
-        
-    }else{
-        console.log("loggeed in ");
         
     }
 

@@ -1,7 +1,7 @@
 const authUser = (req,res,next)=>{
     const token = req.cookies.jwt;
     if(!token){
-        res.redirect('/login');
+        return res.redirect('/login');
     }
     next();
 }

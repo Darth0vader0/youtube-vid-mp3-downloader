@@ -1,9 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { exec } = require('child_process');
-const path = require('path');
-const { google } = require('googleapis');
-const fs = require('fs');
+
 const app = express();
 const port = 3001;
 const bodyParser = require('body-parser');
@@ -13,7 +10,7 @@ const multer = require('multer');
 const upload = multer();
 
 const {login,signup,home,profile,search,updateProfile} = require('./src/routes/routes');
-const {download} = require('./src/controllers/vidToMp3.controller');
+const {download, fetchYoutubeData} = require('./src/controllers/vidToMp3.controller');
 const {signUp,logIn,checkLogins,logout} = require('./src/controllers/auth.controller');
 const {fetchUserData} = require('./src/controllers/user.controller');   
 const {uploadPhoto} = require('./src/controllers/profile.controller');
@@ -39,48 +36,20 @@ app.post('/signup',signUp);
 app.post('/login',logIn);
 app.post('/updateProfile',upload.single('photo'),uploadPhoto);
 
-// Function to search YouTube
-async function searchYouTube(query) {
-    const youtube = google.youtube('v3');
-    try {
-        const response = await youtube.search.list({
-            part: 'snippet',
-            q: query + ' official video',
-            type: 'video',
-            maxResults: 5,
-            key: 'AIzaSyAW8W9AjxXvLY8fbK9HjDI3cs2BdFR-BVc',
-        });
 
-        // Create an array of objects
-        const results = response.data.items.map(item => ({
-            title: item.snippet.title,
-            videoId: item.id.videoId,
-            videoUrl: `https://www.youtube.com/watch?v=${item.id.videoId}`,
-        }));
 
-        return results;
-    } catch (error) {
-        console.error('Error while fetching YouTube search results:', error.message);
-        return [];
-    }
-}
 
-app.get('/fetch-data', async (req, res) => {
-    try {
-        const query = req.query.q || "never gonna give up";
-        const results = await searchYouTube(query);
-        res.json(results);
-    } catch (error) {
-        res.status(500).json({ error: 'Error fetching YouTube data' });
-    }
-});
+// API Endpoint: Fetch YouTube search results
+app.get('/fetchYoutubeData', fetchYoutubeData);
 
 // API Endpoint: Download YouTube video as MP3
 app.post('/download', download);
 
 // Serve downloaded files
 app.use('/downloads', express.static('downloads'));
-
+console.log(__dirname);
+// print download path
+console.log(__dirname + '/downloads');
 // Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
