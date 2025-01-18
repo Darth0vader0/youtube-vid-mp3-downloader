@@ -15,8 +15,13 @@ const fetchUserData = (req,res)=>{
                 return res.status(404).json({ message: 'User not found' });
             }
             const user = result[0];
+            if (user.display_picture) {
+                user.display_picture = user.display_picture.toString('base64');
+            }else {
+                user.display_picture = null;
+            }
             
-            res.status(200).json({userName : user.profile_name});
+            res.status(200).json({userName : user.profile_name,display_picture : user.display_picture});
         });
     } catch (error) {
         console.log("internal server error ", error.message);

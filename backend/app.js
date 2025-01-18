@@ -8,11 +8,15 @@ const app = express();
 const port = 3001;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const {authUser} = require ('./src/middlewares/authUser.middelware')
+const multer = require('multer');
+const upload = multer();
 
-
-const {login,signup,home,profile} = require('./src/routes/routes');
+const {login,signup,home,profile,search,updateProfile} = require('./src/routes/routes');
+const {download} = require('./src/controllers/vidToMp3.controller');
 const {signUp,logIn,checkLogins,logout} = require('./src/controllers/auth.controller');
 const {fetchUserData} = require('./src/controllers/user.controller');   
+const {uploadPhoto} = require('./src/controllers/profile.controller');
 // Middleware
 
 app.use(cors());
@@ -28,9 +32,12 @@ app.get('/checkLogins',checkLogins);
 app.get('/profile',profile);
 app.get('/logout',logout);
 app.get('/fetchUserData',fetchUserData);
+app.get('/search',authUser,search);
+app.get('/updateProfile',updateProfile)
 // Signup endpoint
 app.post('/signup',signUp);
 app.post('/login',logIn);
+app.post('/updateProfile',upload.single('photo'),uploadPhoto);
 
 // Function to search YouTube
 async function searchYouTube(query) {
@@ -57,9 +64,7 @@ async function searchYouTube(query) {
         return [];
     }
 }
-app.get('/search', (req, res) => {
-    res.sendFile(path.join(__dirname, 'search.html'))
-})
+
 app.get('/fetch-data', async (req, res) => {
     try {
         const query = req.query.q || "never gonna give up";
@@ -71,28 +76,7 @@ app.get('/fetch-data', async (req, res) => {
 });
 
 // API Endpoint: Download YouTube video as MP3
-app.post('/download', (req, res) => {
-    const videoUrl = req.body.url;
-    const vidTitle = req.body.title;
-    const uniqueFileName = `audio_${vidTitle}.mp3`;
-    const mp3Path = path.join(__dirname, 'downloads', uniqueFileName);
-
-    const command = `yt-dlp -x --audio-format mp3 -o "${mp3Path}" ${videoUrl}`;
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error downloading MP3: ${error.message}`);
-            return res.status(500).send('Error downloading MP3');
-        }
-        if (stderr) {
-            console.error(`stderr while downloading MP3: ${stderr}`);
-        }
-        console.log(`stdout while downloading MP3: ${stdout}`);
-
-        res.json({
-            downloadUrl: `/downloads/${uniqueFileName}`
-        });
-    });
-});
+app.post('/download', download);
 
 // Serve downloaded files
 app.use('/downloads', express.static('downloads'));

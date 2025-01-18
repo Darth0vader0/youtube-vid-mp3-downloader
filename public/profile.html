@@ -37,9 +37,9 @@
                 <div class="profile-info">
 
                     <div class="profile-avatar">
-                        <img src="photos/kuru_.jpg" alt="Profile Picture">
-                        <div class="settings-icon">
-                             <i class="fas fa-cog"></i> <!-- Font Awesome Settings Icon -->
+                        <img src="photos/kuru_.jpg" id="profile-image" alt="Profile Picture">
+                        <div class="settings-icon" >
+                             <a href="/updateProfile"><i class="fas fa-cog" ></i></a> <!-- Font Awesome Settings Icon -->
                         </div>
                     </div>
                     <div class="profile-details">
@@ -100,7 +100,17 @@
         async function fetchUserData(){
             const result = await fetch('/fetchUserData');
             const userData = await result.json();
+            console.log(userData);
             document.querySelector('.profile-name').textContent = userData.userName;
+
+             if (userData.display_picture) {
+                document.getElementById('profile-image').src = 'data:image/jpeg;base64,' + userData.display_picture
+
+            }
+            else {
+                document.getElementById('profile-image').src = 'photos/kuru_.jpg'
+
+            }
         }
         fetchUserData();
     </script>
