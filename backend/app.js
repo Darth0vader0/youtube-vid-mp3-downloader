@@ -13,7 +13,7 @@ const {login,signup,home,profile,search,updateProfile} = require('./src/routes/r
 const {download, fetchYoutubeData} = require('./src/controllers/vidToMp3.controller');
 const {signUp,logIn,checkLogins,logout} = require('./src/controllers/auth.controller');
 const {fetchUserData} = require('./src/controllers/user.controller');   
-const {uploadPhoto} = require('./src/controllers/profile.controller');
+const {uploadPhoto,updatePassword} = require('./src/controllers/profile.controller');
 // Middleware
 
 app.use(cors());
@@ -35,7 +35,7 @@ app.get('/updateProfile',updateProfile)
 app.post('/signup',signUp);
 app.post('/login',logIn);
 app.post('/updateProfile',upload.single('photo'),uploadPhoto);
-
+app.post("/updatePassword",updatePassword)
 
 
 

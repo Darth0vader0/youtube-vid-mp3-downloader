@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        :root {
+  --spotify-green: #1DB954;
+  --spotify-black: #191414;
+  --spotify-dark-gray: #282828;
+  --spotify-gray: #B3B3B3;
+  --spotify-light-gray: #FFFFFF99;
+  --spotify-white: #FFFFFF;
+}
+
+/* Music Player Footer */
+.music-player-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, rgba(18,18,18,0.8) 0%, rgba(18,18,18,0.95) 100%);
+  backdrop-filter: blur(30px);
+  padding: 1rem;
+  z-index: 100;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.music-player-footer:hover {
+  background: linear-gradient(180deg, rgba(24,24,24,0.9) 0%, rgba(24,24,24,0.98) 100%);
+}
+
+/* Full Screen Player */
+.music-player-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, #450af5, #c4efd9);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.music-player-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.standalone-player {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% + 100vh));
+  background: rgba(24, 24, 24, 0.95);
+  backdrop-filter: blur(30px);
+  border-radius: 12px;
+  padding: 2rem;
+  width: calc(100% - 4rem);
+  max-width: 1000px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: transform 0.5s cubic-bezier(0.3, 0, 0.2, 1);
+  z-index: 1001;
+}
+
+.standalone-player.active {
+  transform: translate(-50%, -50%);
+}
+
+/* Keep existing styles and update some for better aesthetics */
+.album-art {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.album-art::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(69,10,245,0.2), rgba(196,239,217,0.2));
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.album-art:hover::after {
+  opacity: 1;
+}
+
+.control-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.control-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.3s ease;
+}
+
+.control-button:hover::after {
+  transform: translate(-50%, -50%) scale(2);
+}
+
+/* Keep all other existing styles */
+    </style>
+</head>
+<body>
+    <!-- Your existing content -->
+
+    <!-- Music Player Overlay -->
+    <div class="music-player-overlay">
+        <div class="standalone-player">
+            <div class="album-display">
+                <div class="album-art">
+                    <img src="https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228" alt="Album Art">
+                </div>
+                <div class="album-info">
+                    <h2 class="track-name">Blinding Lights</h2>
+                    <p class="artist-name">The Weeknd</p>
+                    <p class="album-name">After Hours</p>
+                </div>
+            </div>
+
+            <!-- Keep existing player controls -->
+            <!-- ... -->
+        </div>
+    </div>
+
+    <!-- Music Player Footer -->
+    <div class="music-player-footer">
+        <div class="now-playing">
+            <div class="now-playing-art">
+                <img src="https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228" alt="Album Art">
+            </div>
+            <div class="track-info">
+                <span class="track-name">Blinding Lights</span>
+                <span class="artist-name">The Weeknd</span>
+            </div>
+        </div>
+
+        <div class="player-controls">
+            <!-- Keep existing controls -->
+        </div>
+
+        <div class="volume-controls">
+            <!-- Keep existing volume controls -->
+        </div>
+    </div>
+
+    <script >
+        // Music Player State
+let isExpanded = false;
+
+// DOM Elements
+const footer = document.querySelector('.music-player-footer');
+const overlay = document.querySelector('.music-player-overlay');
+const player = document.querySelector('.standalone-player');
+
+// Toggle Player Expansion
+function togglePlayer() {
+  isExpanded = !isExpanded;
+  
+  if (isExpanded) {
+    overlay.classList.add('active');
+    player.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  } else {
+    overlay.classList.remove('active');
+    player.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+// Event Listeners
+footer.addEventListener('click', togglePlayer);
+overlay.addEventListener('click', (e) => {
+  if (e.target === overlay) {
+    togglePlayer();
+  }
+});
+
+// Close on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && isExpanded) {
+    togglePlayer();
+  }
+});
+    </script>
+</body>
+</html>

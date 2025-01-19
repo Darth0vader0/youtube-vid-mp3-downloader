@@ -59,21 +59,21 @@
         </main>
         <main class="edit-profile-main">
             <div class="edit-profile-container">
-                <form action="/updatePassword">
+                <form action="/updatePassword" method="POST">
                     <section class="form-section">
                         <h2>Change Password</h2>
                         <div class="form-group">
                             <label for="current-password">Current Password</label>
-                            <input type="password" id="current-password" name="current-password" required>
+                            <input type="password" id="current-password" name="oldPassword" required>
                         </div>
                         <div class="form-group
                         ">
                             <label for="new-password">New Password</label>
-                            <input type="password" id="new-password" name="new-password" required>
+                            <input type="password" id="new-password" name="newPassword" required>
                         </div>
                         <div class="form-group">
                             <label for="confirm-password">Confirm New Password</label>
-                            <input type="password" id="confirm-password" name="confirm-password" required>
+                            <input type="password" id="confirm-password" name="confirmPassword" required>
                         </div>
                     </section>
                     <div class="form-actions">

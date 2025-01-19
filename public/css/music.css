@@ -1,0 +1,219 @@
+/* Add these new styles for the standalone music player */
+.music-player-page {
+    background: linear-gradient(to bottom, #d91e1e, #ce2e2e ,#de2695);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+
+    justify-content: center;
+    padding: 2rem;
+}
+
+.standalone-player {
+    background: var(--spotify-dark-gray);
+    border-radius: 12px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.album-display {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.album-art {
+    width: 300px;
+    height: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.album-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.album-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: var(--spotify-white);
+}
+
+.album-info .track-name {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+}
+
+.album-info .artist-name {
+    font-size: 1.5rem;
+    color: var(--spotify-light-gray);
+    margin: 0 0 0.25rem 0;
+}
+
+.album-info .album-name {
+    font-size: 1rem;
+    color: var(--spotify-gray);
+    margin: 0;
+}
+
+.player-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.control-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.control-button {
+    background: none;
+    border: none;
+    color: var(--spotify-light-gray);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.control-button:hover {
+    color: var(--spotify-white);
+    transform: scale(1.1);
+}
+
+.control-button.play-pause {
+    background: var(--spotify-white);
+    color: var(--spotify-black);
+    width: 56px;
+    height: 56px;
+}
+
+.control-button.play-pause:hover {
+    transform: scale(1.1);
+    background: #ffffff;
+}
+
+.progress-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--spotify-gray);
+    font-size: 0.875rem;
+}
+
+.progress-slider {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+}
+
+.progress-slider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 30%;
+    background: var(--spotify-white);
+    border-radius: 2px;
+}
+
+.progress-slider:hover::before {
+    background: var(--spotify-green);
+}
+
+.additional-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.volume-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 125px;
+}
+
+.volume-slider {
+    width: 100px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+}
+
+.volume-slider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 70%;
+    background: var(--spotify-white);
+    border-radius: 2px;
+}
+
+.volume-slider:hover::before {
+    background: var(--spotify-green);
+}
+
+@media (max-width: 768px) {
+    .music-player-page {
+        padding: 1rem;
+    }
+
+    .standalone-player {
+        padding: 1rem;
+    }
+
+    .album-display {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .album-art {
+        width: 200px;
+        height: 200px;
+    }
+
+    .album-info .track-name {
+        font-size: 2rem;
+    }
+
+    .album-info .artist-name {
+        font-size: 1.25rem;
+    }
+
+    .control-buttons {
+        gap: 1rem;
+    }
+
+    .additional-controls {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+/* Keep all existing styles */
