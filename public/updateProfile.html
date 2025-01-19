@@ -59,7 +59,7 @@
         </main>
         <main class="edit-profile-main">
             <div class="edit-profile-container">
-                <form action="/updatePassword" method="POST">
+                <form id="passwordForm">
                     <section class="form-section">
                         <h2>Change Password</h2>
                         <div class="form-group">
@@ -85,6 +85,49 @@
         </main>
     </div>
     <script>
+        const form = document.getElementById('passwordForm');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();  // Prevent the form from submitting normally
+
+        const oldPassword = document.getElementById('current-password').value;
+        console.log(oldPassword);
+        
+        const newPassword = document.getElementById('new-password').value;
+        console.log(newPassword);
+
+    
+        try {
+                form.reset();
+
+            // Send data to server using fetch (POST request)
+            const response = await fetch('/updatePassword', {
+                method: 'POST',
+                body: JSON.stringify({
+                    oldPassword : oldPassword,
+                    newPassword : newPassword
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            // Check if the response is successful (status code 200)
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                alert(data.msg + "changed ")
+                
+            } else {
+                const errorData = await response.json();
+                alert(`Error: ${errorData.error || 'Something went wrong'}`);  // Show error message
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('There was a problem with the request. Please try again later.');
+        }
+    });
+
         function activateFile() {
             document.getElementById('photo-upload').click();
         }

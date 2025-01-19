@@ -33,6 +33,8 @@ const updatePassword =  (req,res)=>{
         const query = `SELECT * FROM users WHERE email = '${email}'`;
 
         const { newPassword, oldPassword } = req.body;
+        console.log(newPassword)
+        console.log(oldPassword)
          db.query(query, async (err, result) => {
             if (err) {
                 console.error('Error fetching user data:', err.message);
@@ -44,13 +46,13 @@ const updatePassword =  (req,res)=>{
             const user = result[0];
             const isMatch = await bcrypt.compare(oldPassword, user.password);
             if(!isMatch){
-                return res.json({msg : 'wrong password'})
+                return res.status().json({msg : 'wrong password'})
             }
              const hashedPassword = await bcrypt.hash(newPassword, 10);
 
         // Update the user's password in the database
         await db.query('UPDATE users SET password = ? WHERE email = ?', [hashedPassword, email]);
-            res.status(200).json({userName : user.profile_name});
+            res.status(200).json({msg : "password changed "});
         });
       
     } catch (error) {
