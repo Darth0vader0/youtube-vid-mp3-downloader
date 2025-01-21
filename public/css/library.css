@@ -1,0 +1,144 @@
+/* Add these new styles to your existing style.css file */
+
+.library-content {
+    background: linear-gradient(180deg, #1e3264 0%, var(--spotify-black) 100%);
+}
+
+.library-filters {
+    display: flex;
+    gap: 8px;
+}
+
+.filter-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 20px;
+    color: var(--spotify-white);
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.filter-btn.active {
+    background: var(--spotify-white);
+    color: var(--spotify-black);
+}
+
+.library-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 24px;
+    padding: 24px 32px;
+}
+
+.library-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.library-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.item-artwork {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    margin-bottom: 16px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.item-artwork img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.liked-songs-art {
+    background: linear-gradient(135deg, #450af5, #c4efd9);
+}
+
+.artwork-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.liked-songs-icon {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    color: var(--spotify-white);
+}
+
+.library-item h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--spotify-white);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.library-item p {
+    font-size: 14px;
+    color: var(--spotify-light-gray);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.library-item .play-button {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--spotify-green);
+    border: none;
+    color: var(--spotify-black);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.3s ease;
+}
+
+.library-item:hover .play-button {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.library-item .play-button:hover {
+    transform: scale(1.1);
+    background-color: #1ed760;
+}
+
+@media (max-width: 768px) {
+    .library-filters {
+        display: none;
+    }
+    
+    .library-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        padding: 16px;
+        gap: 16px;
+    }
+}
