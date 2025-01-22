@@ -10,10 +10,13 @@ const home=(req,res)=>{
 const profile=(req,res)=>{
     res.sendFile("C:/nodeApp/public/profile.html");
 }
-const search = (req,res)=>{
-    res.sendFile("C:/nodeApp/public/search.html")
+const searchOnYoutube = (req,res)=>{
+    res.sendFile("C:/nodeApp/public/searchOnYoutube.html")
+}
+const searchSpotifySongs =(req,res)=>{
+    res.sendFile("C:/nodeApp/public/searchOnSpotify.html")
 }
 const updateProfile = (req,res)=>{
     res.sendFile("C:/nodeApp/public/updateProfile.html")
 }
-module.exports = {signup,login,home,profile,search,updateProfile};
+module.exports = {signup,login,home,profile,searchOnYoutube,updateProfile,searchSpotifySongs};

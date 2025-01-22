@@ -3,6 +3,11 @@ const { exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const bodyParser = require('body-parser');
+const dotEnv = require('dotenv');
+dotEnv.config();
+const axios = require('axios');
+
+let accessToken = '';
 
 
 const download = (req,res)=>{
@@ -90,4 +95,66 @@ const fetchYoutubeData = async (req, res) => {
     }
 }
 
-module.exports ={download , fetchYoutubeData}
+//for spotify songs page
+async function getAccessToken() {
+    const tokenUrl = "https://accounts.spotify.com/api/token";
+    const credentials = Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString("base64");
+
+    try {
+        const response = await axios.post(
+            tokenUrl,
+            new URLSearchParams({ grant_type: "client_credentials" }),
+            {
+                headers: {
+                    "Authorization": `Basic ${credentials}`,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            }
+        );
+        accessToken = response.data.access_token;
+    } catch (error) {
+        console.error("Error fetching access token:", error.response.data);
+    }
+}
+const searchSpotify =  async (req, res) => {
+    const { query } = req.query;
+
+    if (!query) {
+        return res.status(400).json({ error: "Please provide a search query." });
+    }
+
+    if (!accessToken) {
+        await getAccessToken();
+    }
+
+    const searchUrl = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=10`;
+
+    try {
+        const response = await axios.get(searchUrl, {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+            },
+        });
+
+        const tracks = response.data.tracks.items.map((track) => ({
+            name: track.name,
+            artist: track.artists.map((artist) => artist.name).join(", "),
+            album: track.album.name,
+            thumbnail: track.album.images[0]?.url,
+            url: track.external_urls.spotify,
+        }));
+
+        res.json({ results: tracks });
+    } catch (error) {
+        if (error.response.status === 401) {
+            // Access token expired, refresh it
+            await getAccessToken();
+            return res.redirect(req.originalUrl);
+        }
+        console.error("Error fetching songs:", error.response.data);
+        res.status(500).json({ error: "Failed to fetch songs." });
+    }
+}
+
+
+module.exports ={download , fetchYoutubeData,searchSpotify}
