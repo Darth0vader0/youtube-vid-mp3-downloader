@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt');
 const jwtGenerator = require('../lib/utils');
 const jwt = require('jsonwebtoken')
 const db = require('../lib/db');
+const { v4: uuidv4 } = require('uuid'); 
+
 
 const signUp = async (req, res) => {
     const { email, password, profile_name, day, month, year, gender } = req.body;
@@ -23,13 +25,14 @@ const signUp = async (req, res) => {
         try {
             // Hash the password
             const hashedPassword = await bcrypt.hash(password, 10);
-
+            // Generate a unique user ID
+            const user_id = uuidv4();
             // SQL query to insert user data
             const query = `
-            INSERT INTO users (email, password, profile_name, date_of_birth, gender) 
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO users (user_id,email, password, profile_name, date_of_birth, gender) 
+            VALUES (?,?, ?, ?, ?, ?)
         `;
-            db.query(query, [email, hashedPassword, profile_name, date_of_birth, gender], (err, result) => {
+            db.query(query, [user_id,email, hashedPassword, profile_name, date_of_birth, gender], (err, result) => {
                 if (err) {
                     console.error('Error inserting user:', err.message);
                     return res.status(500).json({ message: 'Internal server error' });

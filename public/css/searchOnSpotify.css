@@ -318,83 +318,7 @@ body {
     color: white;
     box-shadow: none;
 }
- .card {
-            background-color: #181818;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 400px;
-            overflow: hidden;
-            transition: background-color 0.3s ease;
-            margin: 5px;
-        }
 
-        .card:hover {
-            background-color: #282828;
-        }
-
-        .card-content {
-            display: flex;
-            padding: 16px;
-        }
-
-        .album-cover {
-            width: 60px;
-            height: 80px;
-            border-radius: 4px;
-        }
-
-        .track-info {
-            margin-left: 16px;
-            flex-grow: 1;
-        }
-
-        .track-title {
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: bold;
-            margin: 0 0 4px 0;
-        }
-
-        .artist, .album {
-            color: #b3b3b3;
-            font-size: 14px;
-            margin: 0 0 4px 0;
-        }
-
-        .controls {
-            display: flex;
-            align-items: center;
-        }
-
-        .play-button {
-            background-color: #1db954;
-            border: none;
-            border-radius: 50%;
-            color: white;
-            width: 40px;
-            height: 40px;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .play-button:hover {
-            transform: scale(1.1);
-        }
-
-        .more-options {
-            color: #b3b3b3;
-            font-size: 20px;
-            margin-left: 16px;
-            cursor: pointer;
-        }
-
-        .more-options:hover {
-            color: #ffffff;
-        }
 .search-icon {
     background-color: #242424;
     border: none;
@@ -428,10 +352,12 @@ body {
     cursor: pointer;
     transition: background-color 0.3s;
 }
+
 .main-content{
+    flex-grow: 1;
     height: 100vh;
     overflow-y: auto; /* Enable vertical scrolling */
-    padding-bottom:-70px ;
+    padding-bottom:100px ;
 }
 /* Gradient backgrounds for category cards */
 .bg-gradient-1 { background: linear-gradient(45deg, #FF4081, #FF79B0); }
@@ -440,3 +366,148 @@ body {
 .bg-gradient-4 { background: linear-gradient(45deg, #00BCD4, #4DD0E1); }
 .bg-gradient-5 { background: linear-gradient(45deg, #4CAF50, #81C784); }
 .bg-gradient-6 { background: linear-gradient(45deg, #FF9800, #FFB74D); }
+
+/* Song card styles */
+.song-card {
+    width: 480px;
+    height: 80px;
+    background: #282828;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    position: relative;
+}
+
+.song-card:hover {
+    background: #333333;
+    transform: translateY(-2px);
+}
+
+.cover {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.play-icon {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 2;
+}
+
+.song-card:hover .play-icon {
+    opacity: 1;
+}
+
+.play-icon:hover {
+    transform: scale(1.1);
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.play-icon::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 0 8px 12px;
+    border-color: transparent transparent transparent #ffffff;
+    margin-left: 2px;
+}
+
+.info {
+    padding: 0 20px;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.song-details {
+    max-width: 60%;
+}
+
+.song-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.artist, .album {
+    font-size: 14px;
+    color: #b3b3b3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.spotify-link {
+    text-decoration: none;
+    color: #1DB954;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border: 1.5px solid #1DB954;
+    border-radius: 16px;
+    transition: all 0.2s ease;
+    margin-left: 16px;
+}
+
+.spotify-link:hover {
+    background: #1DB954;
+    color: #000000;
+}
+
+#resultsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    width: 100%;
+    max-width: 520px;
+}
+
+
+ #footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #333;
+      color: white;
+      padding: 10px;
+      transition: transform 0.3s ease-in-out;
+      z-index: 1;
+    }
+
+    #footer.hidden {
+      transform: translateY(100%); /* Hide the footer by moving it off-screen */
+    }

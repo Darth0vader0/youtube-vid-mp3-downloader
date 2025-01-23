@@ -12,65 +12,115 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
+        :root {
+            --primary: #1DB954;
+            --primary-dark: #1a9548;
+            --bg-dark: #121212;
+            --card-bg: #282828;
+            --card-hover: #333333;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+        }
+
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #121212;
-            color: #ffffff;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            padding: 20px;
         }
-        .thumbnail {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+
+        .container {
+            display: grid;
+            gap: 16px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
         .song-card {
-            width: 480px;
-            height: 80px;
-            background: #282828;
-            border-radius: 8px;
+            background: var(--card-bg);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             overflow: hidden;
-            transition: transform 0.2s ease, background-color 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            min-height: 80px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .song-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03));
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .song-card:hover {
-            background: #333333;
-            transform: translateY(-2px);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background: var(--card-hover);
+        }
+
+        .song-card:hover::before {
+            opacity: 1;
         }
 
         .cover {
+            position: relative;
             width: 80px;
             height: 80px;
-            background: linear-gradient(45deg, #1DB954, #1ed760);
-            display: flex;
-            align-items: center;
-            justify-content: center;
             flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .song-card:hover .thumbnail {
+            transform: scale(1.1);
         }
 
         .play-icon {
-            width: 36px;
-            height: 36px;
-            background: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             opacity: 0;
-            transition: opacity 0.2s ease, transform 0.2s ease;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%) scale(0.8);
+            left: 50%;
+            top: 50%;
+            z-index: 2;
         }
 
         .song-card:hover .play-icon {
             opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
         }
 
         .play-icon:hover {
-            transform: scale(1.1);
-            background: rgba(0, 0, 0, 0.7);
+            background: var(--primary-dark);
+            transform: translate(-50%, -50%) scale(1.1);
         }
 
         .play-icon::before {
@@ -79,117 +129,174 @@
             height: 0;
             border-style: solid;
             border-width: 8px 0 8px 12px;
-            border-color: transparent transparent transparent #ffffff;
+            border-color: transparent transparent transparent var(--text-primary);
             margin-left: 2px;
         }
 
         .info {
-            padding: 0 20px;
+            padding: 12px 20px;
             flex-grow: 1;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 12px;
         }
 
         .song-details {
-            max-width: 60%;
+            flex: 1;
+            min-width: 0;
         }
 
         .song-name {
-            font-size: 16px;
-            font-weight: 500;
-            color: #ffffff;
+            font-size: clamp(14px, 2vw, 16px);
+            font-weight: 600;
+            color: var(--text-primary);
             margin-bottom: 4px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .artist, .album {
-            font-size: 14px;
-            color: #b3b3b3;
+        .artist {
+            font-size: clamp(12px, 1.8vw, 14px);
+            color: var(--text-secondary);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            opacity: 0.8;
         }
 
         .spotify-link {
             text-decoration: none;
-            color: #1DB954;
-            font-size: 14px;
+            color: var(--primary);
+            font-size: clamp(12px, 1.8vw, 14px);
             font-weight: 500;
             padding: 6px 12px;
-            border: 1.5px solid #1DB954;
-            border-radius: 16px;
-            transition: all 0.2s ease;
-            margin-left: 16px;
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .spotify-link:hover {
-            background: #1DB954;
-            color: #000000;
+            background: var(--primary);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px rgba(29, 185, 84, 0.3);
         }
 
-        /* For demonstration purposes, adding container to show multiple cards */
-        #song-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding: 20px;
-            width: 100%;
-            max-width: 520px;
+        @media (max-width: 480px) {
+            .container {
+                gap: 12px;
+                padding: 12px;
+            }
+
+            .song-card {
+                border-radius: 8px;
+            }
+
+            .cover {
+                width: 60px;
+                height: 60px;
+            }
+
+            .info {
+                padding: 8px 12px;
+            }
+
+            .spotify-link {
+                padding: 4px 8px;
+            }
+        }
+
+        @media (hover: none) {
+            .play-icon {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+                background: rgba(29, 185, 84, 0.9);
+            }
+        }
+
+        /* Optional: Add a subtle animation when cards are loaded */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .song-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .container > :nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .container > :nth-child(3) {
+            animation-delay: 0.2s;
         }
     </style>
 </head>
 <body>
-    <div id="song-container">
-        
-    </div>
-    <script>
-      const response = {
-    "results": [
-        {
-            "name": "MONTERO (Call Me By Your Name)",
-            "artist": "Lil Nas X",
-            "album": "MONTERO",
-            "thumbnail": "https://i.scdn.co/image/ab67616d0000b273be82673b5f79d9658ec0a9fd",
-            "url": "https://open.spotify.com/track/1SC5rEoYDGUK4NfG82494W"
-        },
-        {
-            "name": "Nandemonaiya - movie ver.",
-            "artist": "RADWIMPS",
-            "album": "Your Name.",
-            "thumbnail": "https://i.scdn.co/image/ab67616d0000b2733d1869d8c477d291a205a2d6",
-            "url": "https://open.spotify.com/track/7dEfa89dZfo6CQPdsgGCF6"
-        }
-    ]
-};
-function load() {
-// Reference to the container
-const container = document.getElementById('song-container');
-
-// Iterate through the first two songs and create cards
-response.results.slice(0, 2).forEach(song => {
-    const songCard = `
+    <div class="container">
         <div class="song-card">
             <div class="cover">
-                <img src="${song.thumbnail}" alt="${song.name}" class="thumbnail">
+                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=300&q=80" 
+                     alt="Blue Hair" 
+                     class="thumbnail">
+                <div class="play-icon"></div>
             </div>
             <div class="info">
                 <div class="song-details">
-                    <div class="song-name">${song.name}</div>
-                    <div class="artist">${song.artist}</div>
+                    <div class="song-name">Blue Hair</div>
+                    <div class="artist">TV Girl</div>
                 </div>
-                <a href="${song.url}" target="_blank" class="spotify-link">Play</a>
+                <a href="https://open.spotify.com/track/39sDitIeCMrVX2QyXHY46t" 
+                   target="_blank" 
+                   class="spotify-link">
+                    Play
+                </a>
             </div>
         </div>
-    `;
 
-    // Append the song card to the container
-    container.innerHTML += songCard;
-});
-}
-load()
-    </script>
+        <div class="song-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=300&q=80" 
+                     alt="Another Song" 
+                     class="thumbnail">
+                <div class="play-icon"></div>
+            </div>
+            <div class="info">
+                <div class="song-details">
+                    <div class="song-name">Another Song</div>
+                    <div class="artist">Another Artist</div>
+                </div>
+                <a href="#" class="spotify-link">Play</a>
+            </div>
+        </div>
+
+        <div class="song-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=300&q=80" 
+                     alt="Yet Another Song" 
+                     class="thumbnail">
+                <div class="play-icon"></div>
+            </div>
+            <div class="info">
+                <div class="song-details">
+                    <div class="song-name">Yet Another Song With a Very Long Title</div>
+                    <div class="artist">Yet Another Artist</div>
+                </div>
+                <a href="#" class="spotify-link">Play</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

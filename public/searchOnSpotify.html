@@ -213,39 +213,40 @@
         </div>
 
         <!-- Player (same as index.html) -->
-        <div class="player fixed-bottom">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-md-3" style="cursor: pointer;" id="playlistToggle">
-                        <div class="d-flex align-items-center">
-                            <img src="https://via.placeholder.com/300x400" alt="Now Playing" class="me-3 w-25 rounded-1">
-                            <div>
-                                <h6 class="text-white mb-0">Song Title</h6>
-                                <small class="">Artist</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="player-controls text-center">
-                            <button class="btn btn-link text-white mx-2"><i class="bi bi-shuffle"></i></button>
-                            <button class="btn btn-link text-white mx-2"><i class="bi bi-skip-start-fill"></i></button>
-                            <button class="btn btn-link text-white mx-2"><i class="bi bi-play-circle-fill fs-2"></i></button>
-                            <button class="btn btn-link text-white mx-2"><i class="bi bi-skip-end-fill"></i></button>
-                            <button class="btn btn-link text-white mx-2"><i class="bi bi-repeat"></i></button>
-                        </div>
-                        <div class="progress mt-2">
-                            <div class="progress-bar" role="progressbar" style="width: 45%"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="volume-controls text-end">
-                            <button class="btn btn-link text-white"><i class="bi bi-volume-up"></i></button>
-                            <input type="range" class="form-range d-inline-block w-50">
-                        </div>
+       <div class="player sticky-bottom" id="footer">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-3" style="cursor: pointer;" id="playlistToggle">
+                <div class="d-flex align-items-center">
+                    <img src="https://via.placeholder.com/300x400" alt="Now Playing" class="me-3 w-25 rounded-1">
+                    <div>
+                        <h6 class="text-white mb-0">Song Title</h6>
+                        <small class="">Artist</small>
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="player-controls text-center">
+                    <button class="btn btn-link text-white mx-2"><i class="bi bi-shuffle"></i></button>
+                    <button class="btn btn-link text-white mx-2"><i class="bi bi-skip-start-fill"></i></button>
+                    <button class="btn btn-link text-white mx-2"><i class="bi bi-play-circle-fill fs-2"></i></button>
+                    <button class="btn btn-link text-white mx-2"><i class="bi bi-skip-end-fill"></i></button>
+                    <button class="btn btn-link text-white mx-2"><i class="bi bi-repeat"></i></button>
+                </div>
+                <div class="progress mt-2">
+                    <div class="progress-bar" role="progressbar" style="width: 45%"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="volume-controls text-end">
+                    <button class="btn btn-link text-white"><i class="bi bi-volume-up"></i></button>
+                    <input type="range" class="form-range d-inline-block w-50">
+                </div>
+            </div>
         </div>
+    </div>
+</div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -274,18 +275,7 @@
                 const resultsContainer = document.getElementById('resultsContainer');
                 const browseAll = document.getElementById('browseAll');
                 const searchBtn = document.getElementById('search-btn');
-            // const response = await fetch('/fetch-data', {
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     query: {
-            //         q: searchInput.value
-            //     }
-            // });
-            // console.log(response);
-            
-    // Mock data for search results
+       
    searchInput.addEventListener("input",()=>{
             if(searchInput.value.length === 0){
 
@@ -297,41 +287,81 @@
     searchBtn.addEventListener('click',async ()=>{
         const searchTerm = searchInput.value.toLowerCase();
         
-        const response = await fetch('/searchSpotify?query='+encodeURI(searchTerm));
+        try {
+        const response = await fetch(`/searchSpotify?query=${encodeURIComponent(searchTerm)}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer YOUR_API_TOKEN', // Replace with your API key/token
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
 
         const data = await response.json();
-       
-         searchResults.classList.remove('d-none');
+        
+        // Handle the fetched song data
+        console.log(data);
+          searchResults.classList.remove('d-none');
             browseAll.classList.add('d-none');
-        displaySearchResults(data);
+        displaySongs(data.results); // Adjust to match your API's response structure
+    } catch (error) {
+        console.error('Error fetching songs:', error);
+    }
+       
+       
 
     })
 
 
-function displaySearchResults(songs) {
-     resultsContainer.innerHTML = songs.map(song => `
-           <div class="card">
-                <div class="card-content">
-                    <img src="${ 'https://via.placeholder.com/300x400'}" alt="Album Cover" class="album-cover">
-                    <div class="track-info">
-                        <h4 class="track-title">${song.title}</h4>
-                    </div>
-                    <div class="controls">
-                        <button class="play-button" data-videoUrl="${song.videoUrl}" data-videoId ="${song.videoId}" onclick="downloadVidINLocalStorage(this)" style="cursor: pointer;" ><?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg height="32px" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Layer_1"/><g id="play_x5F_alt"><path d="M16,0C7.164,0,0,7.164,0,16s7.164,16,16,16s16-7.164,16-16S24.836,0,16,0z M10,24V8l16.008,8L10,24z   " style="fill:#4E4E50;"/></g></svg></button>
-                        <span class="more-options">⋯</span>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+function displaySongs(songs) {
+    const songContainer = document.getElementById('resultsContainer');
+    songContainer.innerHTML = ''; // Clear previous results
 
+    songs.forEach((song) => {
+        const songCard = `
+        <div class="song-card">
+            <div class="cover">
+                <img src="${song.thumbnail}" alt="${song.name}" class="thumbnail">
+                <div class="play-icon"></div>
+            </div>
+            <div class="info">
+                <div class="song-details">
+                    <div class="song-name">${song.name}</div>
+                    <div class="artist">${song.artist}</div>
+                </div>
+                <a href="${song.url}" target="_blank" class="spotify-link">Play</a>
+            </div>
+        </div>`;
+        songContainer.innerHTML += songCard;
+    });
 }
 
+let footer = document.getElementById('footer');
+let timeout;
 
+function hideFooter() {
+  footer.classList.add('hidden');
+}
 
+function showFooter() {
+  footer.classList.remove('hidden');
+  resetTimeout();  // Reset timeout when footer is shown
+}
 
+function resetTimeout() {
+  clearTimeout(timeout);
+  timeout = setTimeout(hideFooter, 3000); // Hide after 3 seconds of inactivity
+}
 
+// Show footer when mouse is over the window or any interaction occurs
+window.addEventListener('mousemove', showFooter);
+window.addEventListener('keydown', showFooter);
 
-
+// Hide footer after a timeout when idle
+resetTimeout();
     </script>
 </body>
 </html>

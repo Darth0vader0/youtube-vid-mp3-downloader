@@ -51,7 +51,7 @@ app.post('/download', download);
 
 // Serve downloaded files
 app.use('/downloads', express.static('downloads'));
-console.log(__dirname);
+
 // print download path
 console.log(__dirname + '/downloads');
 // Start the server

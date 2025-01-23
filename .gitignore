@@ -1,4 +1,10 @@
-/node_modules
-.env
-package-lock.json
-package.json
+# Backend
+/backend/node_modules/
+/backend/dist/
+/backend/.env
+/backend/*.log
+
+# Frontend
+/public/node_modules/
+/public/build/
+/public/.env
