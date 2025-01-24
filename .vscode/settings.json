@@ -9,5 +9,6 @@
     "[html]": {
       "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
     },
-    "C_Cpp.default.compilerPath": "c:\\Users\\kamal\\Downloads\\mingw-get-setup.exe" // set as "true" to run 'prettier' last not first
+    "C_Cpp.default.compilerPath": "c:\\Users\\kamal\\Downloads\\mingw-get-setup.exe",
+    "liveServer.settings.port": 5501 // set as "true" to run 'prettier' last not first
   }

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/9699ff2ebc.js" crossorigin="anonymous"></script>
+
     <title>Song Card</title>
     <style>
         * {
@@ -33,7 +35,8 @@
         }
 
         .container {
-            display: grid;
+            display: flex;
+            flex-direction: column;
             gap: 16px;
             width: 100%;
             max-width: 1200px;
@@ -42,6 +45,7 @@
         }
 
         .song-card {
+            width: 30%;
             background: var(--card-bg);
             border-radius: 12px;
             display: flex;
@@ -258,45 +262,106 @@
                     <div class="song-name">Blue Hair</div>
                     <div class="artist">TV Girl</div>
                 </div>
-                <a href="https://open.spotify.com/track/39sDitIeCMrVX2QyXHY46t" 
-                   target="_blank" 
+                <button style="cursor: pointer; z-index: 3;"
                    class="spotify-link">
-                    Play
-                </a>
+                    <i class="fa-solid fa-download"></i>
+                </button>
             </div>
         </div>
-
         <div class="song-card">
             <div class="cover">
-                <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=300&q=80" 
-                     alt="Another Song" 
+                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=300&q=80" 
+                     alt="Blue Hair" 
                      class="thumbnail">
                 <div class="play-icon"></div>
             </div>
             <div class="info">
                 <div class="song-details">
-                    <div class="song-name">Another Song</div>
-                    <div class="artist">Another Artist</div>
+                    <div class="song-name">Blue Hair</div>
+                    <div class="artist">TV Girl</div>
                 </div>
-                <a href="#" class="spotify-link">Play</a>
+                <button style="cursor: pointer; z-index: 3;"
+                   class="spotify-link">
+                    <i class="fa-solid fa-download"></i>
+                </button>
             </div>
         </div>
-
         <div class="song-card">
             <div class="cover">
-                <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=300&q=80" 
-                     alt="Yet Another Song" 
+                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=300&q=80" 
+                     alt="Blue Hair" 
                      class="thumbnail">
                 <div class="play-icon"></div>
             </div>
             <div class="info">
                 <div class="song-details">
-                    <div class="song-name">Yet Another Song With a Very Long Title</div>
-                    <div class="artist">Yet Another Artist</div>
+                    <div class="song-name">Blue Hair</div>
+                    <div class="artist">TV Girl</div>
                 </div>
-                <a href="#" class="spotify-link">Play</a>
+                <button style="cursor: pointer; z-index: 3;"
+                   class="spotify-link">
+                    <i class="fa-solid fa-download"></i>
+                </button>
             </div>
         </div>
+        <div class="song-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=300&q=80" 
+                     alt="Blue Hair" 
+                     class="thumbnail">
+                <div class="play-icon"></div>
+            </div>
+            <div class="info">
+                <div class="song-details">
+                    <div class="song-name">Blue Hair</div>
+                    <div class="artist">TV Girl</div>
+                </div>
+                <button style="cursor: pointer; z-index: 3;"
+                   class="spotify-link">
+                    <i class="fa-solid fa-download"></i>
+                </button>
+            </div>
+        </div>
+        <div class="song-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=300&q=80" 
+                     alt="Blue Hair" 
+                     class="thumbnail">
+                <div class="play-icon"></div>
+            </div>
+            <div class="info">
+                <div class="song-details">
+                    <div class="song-name">Blue Hair</div>
+                    <div class="artist">TV Girl</div>
+                </div>
+                <button style="cursor: pointer; z-index: 3;"
+                   class="spotify-link">
+                    <i class="fa-solid fa-download"></i>
+                </button>
+            </div>
+        </div>
+        <div class="song-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=300&q=80" 
+                     alt="Blue Hair" 
+                     class="thumbnail">
+                <div class="play-icon"></div>
+            </div>
+            <div class="info">
+                <div class="song-details">
+                    <div class="song-name">Blue Hair</div>
+                    <div class="artist">TV Girl</div>
+                </div>
+                <button style="cursor: pointer; z-index: 3;"
+                   class="spotify-link">
+                    <i class="fa-solid fa-download"></i>
+                </button>
+            </div>
+        </div>
+
+       
+
+       
     </div>
 </body>
 </html>

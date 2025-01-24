@@ -14,7 +14,7 @@ const {download, fetchYoutubeData,searchSpotify} = require('./src/controllers/so
 const {signUp,logIn,checkLogins,logout} = require('./src/controllers/auth.controller');
 const {fetchUserData} = require('./src/controllers/user.controller');   
 const {uploadPhoto,updatePassword} = require('./src/controllers/profile.controller');
-
+const {downloadSpotifyTrack} = require('./src/controllers/spotifySong.controller');
 // Middleware
 
 app.use(cors());
@@ -48,7 +48,8 @@ app.get('/searchSpotify',searchSpotify)
 
 // API Endpoint: Download YouTube video as MP3
 app.post('/download', download);
-
+//api endpoint for spotify
+app.post('/downloadSpotifyTrack', downloadSpotifyTrack);
 // Serve downloaded files
 app.use('/downloads', express.static('downloads'));
 

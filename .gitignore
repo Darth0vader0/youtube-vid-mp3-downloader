@@ -5,6 +5,6 @@
 /backend/*.log
 
 # Frontend
-/public/node_modules/
-/public/build/
-/public/.env
+/node_modules/
+/.env
+/dist

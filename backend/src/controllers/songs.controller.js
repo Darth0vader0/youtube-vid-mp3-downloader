@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const dotEnv = require('dotenv');
 dotEnv.config();
 const axios = require('axios');
+const SpotifyWebApi = require('spotify-web-api-node');
+
 
 let accessToken = '';
 
@@ -116,6 +118,7 @@ async function getAccessToken() {
         console.error("Error fetching access token:", error.response.data);
     }
 }
+
 const searchSpotify =  async (req, res) => {
     const { query } = req.query;
 
@@ -137,6 +140,7 @@ const searchSpotify =  async (req, res) => {
         });
 
         const tracks = response.data.tracks.items.map((track) => ({
+            id:track.id,
             name: track.name,
             artist: track.artists.map((artist) => artist.name).join(", "),
             album: track.album.name,
@@ -155,6 +159,7 @@ const searchSpotify =  async (req, res) => {
         res.status(500).json({ error: "Failed to fetch songs." });
     }
 }
+
 
 
 module.exports ={download , fetchYoutubeData,searchSpotify}
