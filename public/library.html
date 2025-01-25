@@ -13,6 +13,21 @@
 </head>
 
 <body>
+    <div class="modal-container" id="playlist-modal">
+        <div class="playlist-card">
+            <div class="playlist-icon-container">
+                <svg role="img" height="32" width="32" viewBox="0 0 24 24" fill="#B3B3B3">
+                    <path d="M17.318 1.975a3.329 3.329 0 114.707 4.707L8.451 20.256c-.49.49-1.082.849-1.735 1.048L2.02 22.981c-.684.206-1.375-.275-1.169-.959l1.677-4.696a4.435 4.435 0 011.048-1.735L17.318 1.975zm3.293 1.414a1.329 1.329 0 00-1.88 0L5.159 16.963c-.283.283-.5.624-.636 1l-1.217 3.4 3.4-1.217a2.435 2.435 0 001-.636L21.279 6.037a1.329 1.329 0 000-1.88l-.668-.668z"></path>
+                </svg>
+            </div>
+            <h2>Create Playlist</h2>
+            <form id="playlist-form">
+                <input type="text" id="playlist-name" placeholder="New playlist" aria-label="Enter playlist name" required>
+                <div class="error-message" id="error-message">Please enter a playlist name</div>
+                <button type="submit" class="create-btn">Create</button>
+            </form>
+        </div>
+    </div>
     <div class="music-player-page">
         <div class="standalone-player">
             <div class="album-display">
@@ -150,9 +165,8 @@
                 <!-- Playlists -->
                 <div class="filters">
                     <button class="filter-btn active">Playlists</button>
-                    <button class="filter-btn">Artists</button>
-                    <button class="filter-btn">Albums</button>
-                    <button class="filter-btn">Podcasts</button>
+                   <button class="filter-btn" id="createPlaylistBtn">Create</button>
+
                 </div>
 
                 <div class="library-grid">
@@ -253,6 +267,61 @@
         const playlistToggle = document.querySelector('#playlistToggle');
         const miniplayer = document.querySelector('.music-player-page');
         const overlay = document.querySelector('.overlay');
+        const modal = document.getElementById('playlist-modal');
+        const openModalBtn = document.getElementById('createPlaylistBtn');
+        const form = document.getElementById('playlist-form');
+        const input = document.getElementById('playlist-name');
+        const errorMessage = document.getElementById('error-message');
+
+        // Show modal
+        openModalBtn.addEventListener('click', () => {
+            modal.classList.add('active');
+            fixedBottom.style.opacity = 0.5;
+        });
+
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+            fixedBottom.style.opacity = 1;
+        });
+
+        // Handle form submission
+        form.addEventListener('submit',async function(e) {
+            e.preventDefault();
+            if (input.value.trim() === '') {
+                errorMessage.style.display = 'block';
+            } else {
+                const addToplaylist = await fetch('/createSpotifyPlaylist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: input.value,
+                    }),
+                });
+
+                if (addToplaylist.ok) {
+                    modal.classList.remove('active');
+                    fixedBottom.style.opacity = 1;
+                    input.value = '';
+                    errorMessage.style.display = 'none';
+                    alert('Playlist created successfully!');
+                } else {
+                    errorMessage.style.display = 'block';
+                    alert('Failed to create playlist. Please try again.');
+                }
+            }
+        });
+
+        // Clear error message on input
+        input.addEventListener('input', function() {
+            if (input.value.trim() !== '') {
+                errorMessage.style.display = 'none';
+            }
+        });
 
         playlistToggle.addEventListener('click', () => {
             fixedBottom.style.opacity = 0;

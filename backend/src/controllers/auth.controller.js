@@ -38,7 +38,7 @@ const signUp = async (req, res) => {
                     return res.status(500).json({ message: 'Internal server error' });
                 }
                 jwtGenerator(email,res);
-                res.status(201).json({ message: 'User registered successfully' });
+                res.status(201).redirect('/');
                 
             });
         } catch (error) {

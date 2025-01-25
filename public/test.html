@@ -3,365 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Song Card</title>
     <script src="https://kit.fontawesome.com/9699ff2ebc.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+<link 
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" 
+    rel="stylesheet">
 
-    <title>Song Card</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        :root {
-            --primary: #1DB954;
-            --primary-dark: #1a9548;
-            --bg-dark: #121212;
-            --card-bg: #282828;
-            --card-hover: #333333;
-            --text-primary: #ffffff;
-            --text-secondary: #b3b3b3;
         }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #121212;
             min-height: 100vh;
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
+            display: grid;
+            place-items: center;
             padding: 20px;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            width: 100%;
-            max-width: 1200px;
-            padding: 20px;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         }
 
         .song-card {
-            width: 30%;
-            background: var(--card-bg);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            min-height: 80px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .song-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03));
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            width: 180px;
+            background: #181818;
+            border-radius: 6px;
+            padding: 16px;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            user-select: none;
         }
 
         .song-card:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            background: var(--card-hover);
+            background: #282828;
         }
 
-        .song-card:hover::before {
-            opacity: 1;
-        }
-
-        .cover {
+        .artwork-container {
             position: relative;
-            width: 80px;
-            height: 80px;
-            flex-shrink: 0;
-            overflow: hidden;
+            width: 100%;
+            aspect-ratio: 1;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
         }
 
-        .thumbnail {
+        .artwork {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            border-radius: 4px;
         }
 
-        .song-card:hover .thumbnail {
-            transform: scale(1.1);
-        }
-
-        .play-icon {
+        .button-container {
             position: absolute;
+            bottom: 8px;
+            right: 8px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.3s ease;
+        }
+
+        .song-card:hover .button-container {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .play-button, .download-button {
             width: 40px;
             height: 40px;
-            background: var(--primary);
             border-radius: 50%;
+            border: none;
+            color: black;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            opacity: 0;
+            box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
-            transform: translate(-50%, -50%) scale(0.8);
-            left: 50%;
-            top: 50%;
-            z-index: 2;
         }
 
-        .song-card:hover .play-icon {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
+        .play-button {
+            background: #1db954;
         }
 
-        .play-icon:hover {
-            background: var(--primary-dark);
-            transform: translate(-50%, -50%) scale(1.1);
+        .download-button {
+            background: #ef690f;
         }
 
-        .play-icon::before {
-            content: '';
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 8px 0 8px 12px;
-            border-color: transparent transparent transparent var(--text-primary);
-            margin-left: 2px;
+        .play-button:hover, .download-button:hover {
+            transform: scale(1.06);
         }
 
-        .info {
-            padding: 12px 20px;
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
+        .play-button:hover {
+            background: #1ed760;
         }
 
-        .song-details {
-            flex: 1;
-            min-width: 0;
+        .download-button:hover {
+            background: #cda71d;
         }
 
-        .song-name {
-            font-size: clamp(14px, 2vw, 16px);
-            font-weight: 600;
-            color: var(--text-primary);
+        .song-info {
+            min-height: 62px;
+        }
+
+        .song-title, .song-artist {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .song-card:hover .song-title,
+        .song-card:hover .song-artist {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: clip;
+        }
+
+      
+        .song-title {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
             margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            line-height: 24px;
         }
 
-        .artist {
-            font-size: clamp(12px, 1.8vw, 14px);
-            color: var(--text-secondary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            opacity: 0.8;
+        .song-artist {
+            color: #b3b3b3;
+            font-size: 14px;
+            line-height: 20px;
         }
 
-        .spotify-link {
-            text-decoration: none;
-            color: var(--primary);
-            font-size: clamp(12px, 1.8vw, 14px);
-            font-weight: 500;
-            padding: 6px 12px;
-            border: 2px solid var(--primary);
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .spotify-link:hover {
-            background: var(--primary);
-            color: var(--bg-dark);
-            box-shadow: 0 0 15px rgba(29, 185, 84, 0.3);
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                gap: 12px;
-                padding: 12px;
-            }
-
-            .song-card {
-                border-radius: 8px;
-            }
-
-            .cover {
-                width: 60px;
-                height: 60px;
-            }
-
-            .info {
-                padding: 8px 12px;
-            }
-
-            .spotify-link {
-                padding: 4px 8px;
-            }
-        }
-
-        @media (hover: none) {
-            .play-icon {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-                background: rgba(29, 185, 84, 0.9);
-            }
-        }
-
-        /* Optional: Add a subtle animation when cards are loaded */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .song-card {
-            animation: fadeIn 0.5s ease forwards;
-        }
-
-        .container > :nth-child(2) {
-            animation-delay: 0.1s;
-        }
-
-        .container > :nth-child(3) {
-            animation-delay: 0.2s;
+        /* Optional: Grid layout for multiple cards */
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 24px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="song-grid">
+        <!-- Song Card 1 -->
         <div class="song-card">
-            <div class="cover">
-                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=300&q=80" 
-                     alt="Blue Hair" 
-                     class="thumbnail">
-                <div class="play-icon"></div>
-            </div>
-            <div class="info">
-                <div class="song-details">
-                    <div class="song-name">Blue Hair</div>
-                    <div class="artist">TV Girl</div>
-                </div>
-                <button style="cursor: pointer; z-index: 3;"
-                   class="spotify-link">
+            <div class="artwork-container">
+                <img class="artwork" src="https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228" alt="Blinding Lights">
+                <div class="button-container">
+                    <button class="play-button">
+                        <svg role="img" height="20" width="20" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path>
+                        </svg>
+                    </button>
+                    <button class="download-button">
                     <i class="fa-solid fa-download"></i>
-                </button>
-            </div>
-        </div>
-        <div class="song-card">
-            <div class="cover">
-                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=300&q=80" 
-                     alt="Blue Hair" 
-                     class="thumbnail">
-                <div class="play-icon"></div>
-            </div>
-            <div class="info">
-                <div class="song-details">
-                    <div class="song-name">Blue Hair</div>
-                    <div class="artist">TV Girl</div>
+                      
+                    </button>
                 </div>
-                <button style="cursor: pointer; z-index: 3;"
-                   class="spotify-link">
-                    <i class="fa-solid fa-download"></i>
-                </button>
             </div>
-        </div>
-        <div class="song-card">
-            <div class="cover">
-                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=300&q=80" 
-                     alt="Blue Hair" 
-                     class="thumbnail">
-                <div class="play-icon"></div>
-            </div>
-            <div class="info">
-                <div class="song-details">
-                    <div class="song-name">Blue Hair</div>
-                    <div class="artist">TV Girl</div>
-                </div>
-                <button style="cursor: pointer; z-index: 3;"
-                   class="spotify-link">
-                    <i class="fa-solid fa-download"></i>
-                </button>
-            </div>
-        </div>
-        <div class="song-card">
-            <div class="cover">
-                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=300&q=80" 
-                     alt="Blue Hair" 
-                     class="thumbnail">
-                <div class="play-icon"></div>
-            </div>
-            <div class="info">
-                <div class="song-details">
-                    <div class="song-name">Blue Hair</div>
-                    <div class="artist">TV Girl</div>
-                </div>
-                <button style="cursor: pointer; z-index: 3;"
-                   class="spotify-link">
-                    <i class="fa-solid fa-download"></i>
-                </button>
-            </div>
-        </div>
-        <div class="song-card">
-            <div class="cover">
-                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=300&q=80" 
-                     alt="Blue Hair" 
-                     class="thumbnail">
-                <div class="play-icon"></div>
-            </div>
-            <div class="info">
-                <div class="song-details">
-                    <div class="song-name">Blue Hair</div>
-                    <div class="artist">TV Girl</div>
-                </div>
-                <button style="cursor: pointer; z-index: 3;"
-                   class="spotify-link">
-                    <i class="fa-solid fa-download"></i>
-                </button>
-            </div>
-        </div>
-        <div class="song-card">
-            <div class="cover">
-                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=300&q=80" 
-                     alt="Blue Hair" 
-                     class="thumbnail">
-                <div class="play-icon"></div>
-            </div>
-            <div class="info">
-                <div class="song-details">
-                    <div class="song-name">Blue Hair</div>
-                    <div class="artist">TV Girl</div>
-                </div>
-                <button style="cursor: pointer; z-index: 3;"
-                   class="spotify-link">
-                    <i class="fa-solid fa-download"></i>
-                </button>
+            <div class="song-info">
+                <h3 class="song-title">Blinding Lights</h3>
+                <p class="song-artist">The Weeknd</p>
             </div>
         </div>
 
-       
+        <!-- Song Card 2 -->
+        <div class="song-card">
+            <div class="artwork-container">
+                <img class="artwork" src="https://i.scdn.co/image/ab67616d00001e02e8b066f70c206551210d902b" alt="Stay With Me">
+                <div class="button-container">
+                    <button class="play-button">
+                        <svg role="img" height="20" width="20" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path>
+                        </svg>
+                    </button>
+                    <button class="download-button">
+                                            <i class="fa-solid fa-download"></i>
 
-       
+                    </button>
+                </div>
+            </div>
+            <div class="song-info">
+                <h3 class="song-title long-text">Stay With Me</h3>
+                <p class="song-artist long-text">Calvin Harris, Justin Timberlake, Halsey & Pharrell Williams</p>
+            </div>
+        </div>
+
+        <!-- Song Card 3 -->
+        <div class="song-card">
+            <div class="artwork-container">
+                <img class="artwork" src="photos/kuru_.jpg" alt="As It Was">
+                <div class="button-container">
+                    <button class="play-button">
+                        <svg role="img" height="20" width="20" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path>
+                        </svg>
+                    </button>
+                    <button class="download-button">
+                         <i class="fa-solid fa-download"></i>
+
+                    </button>
+                </div>
+            </div>
+            <div class="song-info">
+                <h3 class="song-title">As It Was</h3>
+                <p class="song-artist">Harry Styles</p>
+            </div>
+        </div>
     </div>
+    <!-- Button to trigger the popup -->
+<button 
+    id="createPlaylistButton" 
+    class="btn btn-success">
+    Create Playlist
+</button>
+
+<!-- Popup Modal -->
+<div 
+    id="createPlaylistContainer" 
+    class="d-none position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center" 
+    style="z-index: 1050;">
+    <div class="bg-white rounded shadow p-4" style="width: 400px;">
+        <h2 class="mb-4">Create New Playlist</h2>
+        <form id="createPlaylistForm">
+            <!-- Playlist Name -->
+            <div class="mb-3">
+                <label for="playlistName" class="form-label">Playlist Name</label>
+                <input 
+                    type="text" 
+                    id="playlistName" 
+                    name="playlistName" 
+                    class="form-control" 
+                    placeholder="Enter playlist name" 
+                    required>
+            </div>
+            <!-- Playlist Description -->
+            <div class="mb-3">
+                <label for="playlistDescription" class="form-label">Description</label>
+                <textarea 
+                    id="playlistDescription" 
+                    name="playlistDescription" 
+                    class="form-control" 
+                    placeholder="Enter a description (optional)" 
+                    rows="3"></textarea>
+            </div>
+            <!-- Buttons -->
+            <div class="d-flex justify-content-end gap-2">
+                <button 
+                    type="button" 
+                    id="cancelButton" 
+                    class="btn btn-secondary">
+                    Cancel
+                </button>
+                <button 
+                    type="submit" 
+                    class="btn btn-primary">
+                    Create
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Bootstrap Bundle with Popper -->
+<script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js">
+</script>
+
+
+    <script>
+      // DOM Elements
+const createPlaylistButton = document.getElementById("createPlaylistButton");
+const createPlaylistContainer = document.getElementById("createPlaylistContainer");
+const cancelButton = document.getElementById("cancelButton");
+const createPlaylistForm = document.getElementById("createPlaylistForm");
+
+// Show the popup
+createPlaylistButton.addEventListener("click", () => {
+    createPlaylistContainer.classList.remove("d-none");
+});
+
+// Hide the popup
+cancelButton.addEventListener("click", () => {
+    createPlaylistContainer.classList.add("d-none");
+});
+
+// Form submission
+createPlaylistForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    
+    const playlistName = document.getElementById("playlistName").value;
+    const playlistDescription = document.getElementById("playlistDescription").value;
+
+    // Example backend call to create the playlist
+    fetch("/api/create-playlist", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: playlistName, description: playlistDescription })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert("Playlist created successfully!");
+        createPlaylistContainer.classList.add("d-none");
+        createPlaylistForm.reset();
+    })
+    .catch(error => {
+        alert("Error creating playlist. Please try again.");
+        console.error("Error:", error);
+    });
+});
+
+    </script>
 </body>
 </html>
+
